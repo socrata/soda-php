@@ -35,6 +35,8 @@
         <select name="data_site">
           <option value="data.medicare.gov" selected="true">Data.Medicare.Gov</option>
           <option value="data.seattle.gov">Data.Seattle.Gov</option>
+          <option value="explore.data.gov">Data.Gov</option>
+          <option value="opendata.go.ke">OpenData.go.ke</option>
           <option value="www.socrata.com">Socrata</option>
         </select><br/>
 
