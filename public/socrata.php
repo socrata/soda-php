@@ -2,15 +2,19 @@
 
 class Socrata {
   // The base URL for this Socrata API, ex: http://data.medicare.gov/api or http://www.socrata.com/api
-  private $root_url = "";
+  private $root_url = "http://opendata.socrata.com/api";
+
+  // App Token
+  private $app_token = "";
 
   // Username and password, used for authenticated requests
   private $user_name = "";
   private $password = "";
 
   // Basic constructor
-  public function __construct($root_url = "", $user_name = "", $password = "") {
+  public function __construct($root_url = "", $app_token = "",  $user_name = "", $password = "") {
     $this->root_url = $root_url;
+    $this ->app_token = $app_token;
     $this->user_name = $user_name;
     $this->password = $password;
     return true;
@@ -34,7 +38,8 @@ class Socrata {
     // Build up the headers we'll need to pass
     $headers = array(
       'Accept: application/json',
-      'Content-type: application/json'
+      'Content-type: application/json',
+      "X-App-Token: " . $this->app_token
     );
 
     // Time for some cURL magic...

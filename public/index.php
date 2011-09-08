@@ -3,10 +3,11 @@
 
   $view_uid = array_get("view_uid", $_POST);
   $data_site = array_get("data_site", $_POST);
+  $app_token = array_get("app_token", $_POST);
   $response = NULL;
   if($view_uid != NULL && $data_site != NULL) {
     // Create a new unauthenticated client
-    $socrata = new Socrata("http://$data_site/api");
+    $socrata = new Socrata("http://$data_site/api", $app_token);
 
     $params = array();
     $row_ids_only = array_get("row_ids_only", $_POST);
@@ -39,6 +40,9 @@
           <option value="opendata.go.ke">OpenData.go.ke</option>
           <option value="www.socrata.com">Socrata</option>
         </select><br/>
+
+        <label for="app_token">App Token (<a href="http://dev.socrata.com/authentication">details</a>)</label>
+        <input type="text" name="app_token" size="10"/><br/>
 
         <label for="view_uid">View ID</label>
         <input type="text" name="view_uid" size="10"/><br/>
