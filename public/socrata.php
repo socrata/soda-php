@@ -14,7 +14,7 @@ class Socrata {
   // Basic constructor
   public function __construct($root_url = "", $app_token = "",  $user_name = "", $password = "") {
     $this->root_url = $root_url;
-    $this ->app_token = $app_token;
+    $this->app_token = $app_token;
     $this->user_name = $user_name;
     $this->password = $password;
     return true;

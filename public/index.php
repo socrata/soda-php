@@ -38,7 +38,7 @@
           <option value="data.seattle.gov">Data.Seattle.Gov</option>
           <option value="explore.data.gov">Data.Gov</option>
           <option value="opendata.go.ke">OpenData.go.ke</option>
-          <option value="www.socrata.com">Socrata</option>
+          <option value="opendata.socrata.com">Socrata</option>
         </select><br/>
 
         <label for="app_token">App Token (<a href="http://dev.socrata.com/authentication">details</a>)</label>
