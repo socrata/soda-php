@@ -62,7 +62,6 @@ class Socrata {
 
     return json_decode($response, true);
   }
-}
 
  // Convenience function for Posts
   public function post($path, $json_filter) {
