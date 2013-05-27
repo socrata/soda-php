@@ -20,9 +20,8 @@ class Socrata {
     return true;
   }
 
-  // Convenience function for GET calls
-  public function get($path, $params = array()) {
-
+  // create query URL based on the root URL, path, and parameters
+  public function create_query_url($path, $params = array()) {
     // The full URL for this resource is the root + the path
     $full_url = $this->root_url . $path;
 
@@ -34,6 +33,15 @@ class Socrata {
     if(count($parameters) > 0) {
       $full_url .= "?" . implode("&", $parameters);
     }
+
+    return $full_url;
+  }
+
+  // create cURL handle, which can then be submitted via get
+  public function create_curl_handle($path, $params = array()) {
+
+    // The full URL for this resource is the root + the path
+    $full_url = $this->create_query_url($path, $params);
 
     // Build up the headers we'll need to pass
     $headers = array(
@@ -52,6 +60,14 @@ class Socrata {
     if($this->user_name != "" && $this->password != "") {
       curl_setopt($handle, CURLOPT_USERPWD, $this->user_name . ":" . $this->password);
     }
+
+    return $handle;
+  }
+
+  // Convenience function for GET calls
+  public function get($path, $params = array()) {
+
+    $handle = $this->create_curl_handle($path, $params);
 
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
