@@ -98,9 +98,9 @@ class Socrata {
     curl_setopt($handle, CURLOPT_URL, $full_url);
     curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $json_filter);
-    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($handle, CURLOPT_POST, true);
+    curl_setopt($handle, CURLOPT_POSTFIELDS, $json_filter);
+    curl_setopt($handle, CURLOPT_CUSTOMREQUEST, "POST");
 
     // Set up request, and auth, if configured
     if($this->user_name != "" && $this->password != "") {
