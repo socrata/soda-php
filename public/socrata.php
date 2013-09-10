@@ -79,7 +79,7 @@ class Socrata {
     return json_decode($response, true);
   }
 
- // Convenience function for Posts
+  // Convenience function for Posts
   public function post($path, $json_filter) {
 
     // The full URL for this resource is the root + the path
@@ -101,6 +101,43 @@ class Socrata {
     curl_setopt($handle, CURLOPT_POST, true);
     curl_setopt($handle, CURLOPT_POSTFIELDS, $json_filter);
     curl_setopt($handle, CURLOPT_CUSTOMREQUEST, "POST");
+
+    // Set up request, and auth, if configured
+    if($this->user_name != "" && $this->password != "") {
+      curl_setopt($handle, CURLOPT_USERPWD, $this->user_name . ":" . $this->password);
+    }
+
+    $response = curl_exec($handle);
+    $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+    if($code != "200") {
+      echo "Error \"$code\" from server: $response";
+      die();
+    }
+
+    return json_decode($response, true);
+  }
+
+  // Convenience function for Puts
+  public function put($path, $json_filter) {
+
+    // The full URL for this resource is the root + the path
+    $full_url = $this->root_url . $path;
+
+
+    // Build up the headers we'll need to pass
+    $headers = array(
+      'Accept: application/json',
+      'Content-type: application/json',
+      "X-App-Token: " . $this->app_token
+    );
+
+    // Time for some cURL magic...
+    $handle = curl_init();
+    curl_setopt($handle, CURLOPT_URL, $full_url);
+    curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($handle, CURLOPT_POSTFIELDS, $json_filter);
+    curl_setopt($handle, CURLOPT_CUSTOMREQUEST, "PUT");
 
     // Set up request, and auth, if configured
     if($this->user_name != "" && $this->password != "") {
