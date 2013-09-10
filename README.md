@@ -1,5 +1,5 @@
 Socrata - Basic PHP Library
-Updated 2010-04-26, Chris Metcalf, chris.metcalf (at) socrata.com
+Updated 2013-09-09, Chris Metcalf, chris.metcalf (at) socrata.com
 
 This library provides a simple wrapper for accessing some of the features of the Socrata Open Data API from PHP. Currently it supports HTTP GET, POST, and PUT operations.
 
