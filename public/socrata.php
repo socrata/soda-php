@@ -1,8 +1,8 @@
 <?php
 
 class Socrata {
-  // The base URL for this Socrata API, ex: http://data.medicare.gov/api or http://www.socrata.com/api
-  private $root_url = "http://opendata.socrata.com/api";
+  // The base URL for this Socrata API, ex: http://data.medicare.gov or http://www.socrata.com
+  private $root_url = "http://opendata.socrata.com";
 
   // App Token
   private $app_token = "";

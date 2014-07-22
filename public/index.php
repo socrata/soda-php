@@ -1,82 +1,60 @@
 <?php
   require_once("socrata.php");
 
-  $view_uid = array_get("view_uid", $_POST);
-  $data_site = array_get("data_site", $_POST);
-  $app_token = array_get("app_token", $_POST);
+  $view_uid = "ykw4-j3aj";
+  $root_url = "https://data.austintexas.gov";
+  $app_token = "B0ixMbJj4LuQVfYnz95Hfp3Ni";
   $response = NULL;
-  if($view_uid != NULL && $data_site != NULL) {
+
+  $latitude = array_get("latitude", $_POST);
+  $longitude = array_get("longitude", $_POST);
+  $range = array_get("range", $_POST);
+
+  if($latitude != NULL && $longitude != NULL && $range != NULL) {
     // Create a new unauthenticated client
-    $socrata = new Socrata("http://$data_site/api", $app_token);
+    $socrata = new Socrata($root_url, $app_token);
 
-    $params = array();
-    $row_ids_only = array_get("row_ids_only", $_POST);
-    if($row_ids_only != NULL && $row_ids_only == "on") {
-      $params["row_ids_only"] = "true";
-      $row_ids_only = true;
-    }
-    if(array_get("max_rows", $_POST) != NULL && array_get("max_rows", $_POST) > 0) {
-      $params["max_rows"] = array_get("max_rows", $_POST);
-    }
+    $params = array("\$where" => "within_circle(location, $latitude, $longitude, $range)");
 
-    // Request rows from the DC Hospitals view
-    $response = $socrata->get("/views/$view_uid/rows.json", $params);
+    $response = $socrata->get("/resource/$view_uid.json", $params);
   }
 ?>
 <html>
   <head>
-    <title>Socrata API PHP Example</title>
+    <title>Austin Dangerous Dogs</title>
   </head>
   <body>
-    <h1>Socrata API PHP Example</h1>
+    <h1>Austin Dangerous Dogs</h1>
 
     <?php if($response == NULL) { ?>
-      <form action="index.php" method="post">
-        <label for="data_site">Data Site:</label>
-        <select name="data_site">
-          <option value="data.medicare.gov" selected="true">Data.Medicare.Gov</option>
-          <option value="data.seattle.gov">Data.Seattle.Gov</option>
-          <option value="explore.data.gov">Data.Gov</option>
-          <option value="opendata.go.ke">OpenData.go.ke</option>
-          <option value="opendata.socrata.com">Socrata</option>
-        </select><br/>
+      <form action="index.php" method="POST">
+        <p>Try 30.27898, -97.68351 with a range of 1000 meters</p>
 
-        <label for="app_token">App Token (<a href="http://dev.socrata.com/authentication">details</a>)</label>
-        <input type="text" name="app_token" size="10"/><br/>
+        <label for="latitude">Latitude</label>
+        <input type="text" name="latitude" size="10" value="30.27898"/><br/>
 
-        <label for="view_uid">View ID</label>
-        <input type="text" name="view_uid" size="10"/><br/>
+        <label for="longitude">Longitude</label>
+        <input type="text" name="longitude" size="10" value="-97.68351"/><br/>
 
-        <label for="row_ids_only">Return only row IDs:</label>
-        <input type="checkbox" name="row_ids_only"/><br/>
-
-        <label for="max_rows">Return only # rows:</label>
-        <input type="text" name="max_rows" size="4"/><br/>
+        <label for="range">Range</label>
+        <input type="text" name="range" size="10" value="1000"/><br/>
 
         <input type="submit" value="Submit"/>
       </form>
     <?php } else { ?>
-      <h2><?= $response["meta"]["view"]["name"] ?></h2>
-      <p><?= $response["meta"]["view"]["description"] ?></p>
+      <h2>Results</h2>
 
       <?# Create a table for our actual data ?>
       <table border="1">
         <tr>
-          <?# Print header row ?>
-          <?php foreach($response["meta"]["view"]["columns"] as $column) { ?>
-            <th><?= $column["name"] ?></th>
-          <?php } ?>
+          <th>Description</th>
+          <th>Address</th>
         </tr>
         <?# Print rows ?>
-        <?php foreach($response["data"] as $row) { ?>
+        <?php foreach($response as $row) { ?>
           <tr>
-            <?php if($row_ids_only == true) { ?>
-              <td><?= $row ?></td>
-            <?php } else { ?>
-              <?php foreach($row as $cell) { ?>
-                <td><?= $cell ?></td>
-              <?php } ?>
-            <?php } ?>
+            <td><?= $row["description_of_dog"] ?></td>
+            <td><?= $row["address"] ?></td>
           </tr>
         <?php } ?>
       </table>
