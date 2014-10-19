@@ -6,6 +6,7 @@ This library provides a simple wrapper for accessing some of the features of the
 The library is very simple. To access the Socrata API, you first instantiate a "Socrata" object, passing in the API base URL for the data site you wish to access. The Base URL is always the URL for the root of the datasite (ex: http://www.socrata.com or http://data.medicare.gov). Then you can use its included methods to make simple API calls:
 
 ```php
+use Socrata\Socrata;
 $socrata = new Socrata("http://data.medicare.gov");
 $response = $socrata->get("/resource/abcd-2345.json");
 ```

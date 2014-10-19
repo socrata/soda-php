@@ -8,6 +8,8 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "files": ["public/socrata.php"]
+        "psr-4": {
+            "Socrata\\": "src"
+        }
     }
 }

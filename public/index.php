@@ -1,5 +1,20 @@
 <?php
-  require_once("socrata.php");
+if (file_exists("../vendor/autoload.php")) {
+  require_once "../vendor/autoload.php";
+} else {
+  require_once "../src/Socrata.php";
+}
+
+use Socrata\Socrata;
+
+// Convenience functions
+function array_get($needle, array $haystack, $default = NULL) {
+  return isset($haystack[$needle]) ? $haystack[$needle] : $default;
+}
+
+function pre_dump($var) {
+  echo "<pre>" . print_r($var) . "</pre>";
+}
 
   $view_uid = "ykw4-j3aj";
   $root_url = "https://data.austintexas.gov";
