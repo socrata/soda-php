@@ -1,0 +1,13 @@
+{
+    "name": "socrata/soda-php",
+    "description": "A simple library to make it easier to access SODA services from PHP",
+    "keywords": ["SODA", "socrata"],
+    "homepage": "http://dev.socrata.com",
+    "require": {
+        "php": "~5.3",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "files": ["public/socrata.php"]
+    }
+}
