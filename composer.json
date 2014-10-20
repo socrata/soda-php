@@ -5,11 +5,20 @@
     "homepage": "http://dev.socrata.com",
     "require": {
         "php": "~5.3",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
         "psr-4": {
             "Socrata\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Socrata\\Test\\": "test"
         }
     }
 }
