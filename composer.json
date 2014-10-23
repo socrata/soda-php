@@ -3,6 +3,7 @@
     "description": "A simple library to make it easier to access SODA services from PHP",
     "keywords": ["SODA", "socrata", "open data", "sdk"],
     "homepage": "http://dev.socrata.com",
+    "license": "Apache-2.0",
     "require": {
         "php": "~5.3",
         "ext-curl": "*",
@@ -20,5 +21,8 @@
         "psr-4": {
             "socrata\\soda\\test\\": "test"
         }
+    },
+    "archive": {
+        "exclude": ["public", "test"]
     }
 }
