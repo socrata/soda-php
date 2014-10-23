@@ -13,12 +13,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Socrata\\": "src"
+            "socrata\\soda\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Socrata\\Test\\": "test"
+            "socrata\\soda\\test\\": "test"
         }
     }
 }
