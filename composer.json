@@ -1,7 +1,7 @@
 {
     "name": "socrata/soda-php",
     "description": "A simple library to make it easier to access SODA services from PHP",
-    "keywords": ["SODA", "socrata"],
+    "keywords": ["SODA", "socrata", "open data", "sdk"],
     "homepage": "http://dev.socrata.com",
     "require": {
         "php": "~5.3",
