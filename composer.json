@@ -1,13 +1,28 @@
 {
     "name": "socrata/soda-php",
     "description": "A simple library to make it easier to access SODA services from PHP",
-    "keywords": ["SODA", "socrata"],
+    "keywords": ["SODA", "socrata", "open data", "sdk"],
     "homepage": "http://dev.socrata.com",
+    "license": "Apache-2.0",
     "require": {
         "php": "~5.3",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
-        "files": ["public/socrata.php"]
+        "psr-4": {
+            "socrata\\soda\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "socrata\\soda\\test\\": "test"
+        }
+    },
+    "archive": {
+        "exclude": ["public", "test"]
     }
 }
