@@ -2,7 +2,7 @@
 
 class Socrata {
   // The base URL for this Socrata API, ex: http://data.medicare.gov or http://www.socrata.com
-  private $root_url = "http://opendata.socrata.com";
+  private $root_url = "https://opendata.socrata.com";
 
   // App Token
   private $app_token = "";
@@ -58,6 +58,7 @@ class Socrata {
 
     // Set up request, and auth, if configured
     if($this->user_name != "" && $this->password != "") {
+      curl_setopt($handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
       curl_setopt($handle, CURLOPT_USERPWD, $this->user_name . ":" . $this->password);
     }
 
