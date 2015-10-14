@@ -7,10 +7,8 @@ This library provides a simple wrapper for accessing some of the features of the
 
 Add the following to your project's `composer.json`:
 
-```json
-"require": {
-    "socrata/soda-php": "*"
-}
+```bash
+composer require socrata/soda-php
 ```
 
 If not using composer, simply require the `socrata\soda\Client` class:
