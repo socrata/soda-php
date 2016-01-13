@@ -5,7 +5,7 @@
     "homepage": "http://dev.socrata.com",
     "license": "Apache-2.0",
     "require": {
-        "php": "~5.3",
+        "php": ">=5.3",
         "ext-curl": "*",
         "ext-json": "*"
     },
