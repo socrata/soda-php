@@ -26,6 +26,8 @@
   <body>
     <h1>Austin Dangerous Dogs</h1>
 
+    <p>If you get no results, its likely because there are no dangerous dogs at that location. Try another lat/long.</p>
+
     <?php if($response == NULL) { ?>
       <form action="index.php" method="POST">
         <label for="latitude">Latitude</label>
