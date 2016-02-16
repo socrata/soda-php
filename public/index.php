@@ -28,16 +28,14 @@
 
     <?php if($response == NULL) { ?>
       <form action="index.php" method="POST">
-        <p>Try 30.27898, -97.68351 with a range of 1000 meters</p>
-
         <label for="latitude">Latitude</label>
-        <input type="text" name="latitude" size="10" value="30.27898"/><br/>
+        <input type="text" name="latitude" size="10" value="30.244588"/><br/>
 
         <label for="longitude">Longitude</label>
-        <input type="text" name="longitude" size="10" value="-97.68351"/><br/>
+        <input type="text" name="longitude" size="10" value="-97.5824817"/><br/>
 
         <label for="range">Range</label>
-        <input type="text" name="range" size="10" value="1000"/><br/>
+        <input type="text" name="range" size="10" value="10000"/><br/>
 
         <input type="submit" value="Submit"/>
       </form>
