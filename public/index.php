@@ -1,7 +1,7 @@
 <?php
   require_once("socrata.php");
 
-  $view_uid = "ykw4-j3aj";
+  $view_uid = "h8x4-nvyi";
   $root_url = "https://data.austintexas.gov";
   $app_token = "B0ixMbJj4LuQVfYnz95Hfp3Ni";
   $response = NULL;
@@ -52,7 +52,7 @@
         <?php foreach($response as $row) { ?>
           <tr>
             <td><?= $row["description_of_dog"] ?></td>
-            <td><?= $row["address"] ?></td>
+            <td><a href="https://www.google.com/maps/search/<?= $row["location"]["coordinates"][1] ?>,<?= $row["location"]["coordinates"][0] ?>"><?= $row["address"] ?></a></td>
           </tr>
         <?php } ?>
       </table>
