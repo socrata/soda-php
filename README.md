@@ -3,23 +3,25 @@ Updated 2014-07-22, Chris Metcalf, chris.metcalf (at) socrata.com
 
 This library provides a simple wrapper for accessing some of the features of the Socrata Open Data API from PHP. Currently it supports HTTP GET, POST, and PUT operations.
 
-The library is very simple. To access the Socrata API, you first instantiate a "Socrata" object, passing in the API base URL for the data site you wish to access. The Base URL is always the URL for the root of the datasite (ex: http://data.medicare.gov). Then you can use its included methods to make simple API calls:
+The library is very simple. To access the Socrata API, you first instantiate a "Socrata" object, passing in the domain of the data site you wish to access. The library will also accept the full root path including the protocol (ex: `http://data.medicare.gov`). Then you can use its included methods to make simple API calls:
 
 ```php
-$socrata = new Socrata("https://data.medicare.gov");
-$response = $socrata->get("/resource/abcd-2345.json");
+$socrata = new Socrata("data.medicare.gov");
+$response = $socrata->get("abcd-2345");
 ```
+
+You in your API calls, you can specify ether the full endpoint relative path (eg: `/resource/abcd-2345.json`), or just the dataset ID (eg: `abcd-2345`).
 
 ## Querying
 
 [Simple filters](http://dev.socrata.com/docs/filtering.html) and [SoQL Queries](http://dev.socrata.com/docs/queries.html) can be passed as a parameter to the `get` function:
 
 ```php
-$socrata = new Socrata("https://data.austintexas.gov", $app_token);
+$socrata = new Socrata("data.austintexas.gov", $app_token);
 
 $params = array("\$where" => "within_circle(location, $latitude, $longitude, $range)");
 
-$response = $socrata->get("/resource/$view_uid.json", $params);
+$response = $socrata->get($view_uid, $params);
 ```
 
 ## Publishing
@@ -27,13 +29,13 @@ $response = $socrata->get("/resource/$view_uid.json", $params);
 To use the library to publish data you can use the PUT (replace) or POST (upsert) methods:
 
 ```php
-$socrata = new Socrata("https://data.medicare.gov", $app_token, $user_name, $password);
+$socrata = new Socrata("data.medicare.gov", $app_token, $user_name, $password);
 
 // Publish data via 'upsert'
-$response = $socrata->post("/resource/abcd-2345.json", $data_as_json);
+$response = $socrata->post("abcd-2345", $data_as_json);
 
 // Publish data via 'replace'
-$response = $socrata->put("/resource/abcd-2345.json", $data_as_json);
+$response = $socrata->put("abcd-2345", $data_as_json);
 ```
 
 The library also includes a simple example application, which retrieves rows from a dataset and dumps them in a simple table.

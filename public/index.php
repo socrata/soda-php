@@ -2,7 +2,7 @@
   require_once("socrata.php");
 
   $view_uid = "h8x4-nvyi";
-  $root_url = "https://data.austintexas.gov";
+  $root_url = "data.austintexas.gov";
   $app_token = "B0ixMbJj4LuQVfYnz95Hfp3Ni";
   $response = NULL;
 
@@ -16,7 +16,7 @@
 
     $params = array("\$where" => "within_circle(location, $latitude, $longitude, $range)");
 
-    $response = $socrata->get("/resource/$view_uid.json", $params);
+    $response = $socrata->get($view_uid, $params);
   }
 ?>
 <html>

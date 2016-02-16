@@ -13,6 +13,10 @@ class Socrata {
 
   // Basic constructor
   public function __construct($root_url = "", $app_token = "",  $user_name = "", $password = "") {
+    // For consistency with other libraries, accept just the domain name for the root
+    if(!preg_match("/^https?:\/\//i", $root_url)) {
+      $root_url = "https://" . $root_url;
+    }
     $this->root_url = $root_url;
     $this->app_token = $app_token;
     $this->user_name = $user_name;
@@ -22,6 +26,12 @@ class Socrata {
 
   // create query URL based on the root URL, path, and parameters
   public function create_query_url($path, $params = array()) {
+    // For consistency with other libraries, accept just a UID for
+    // /resource/$uid queries
+    if(preg_match("/^[a-z0-9]{4}-[a-z0-9]{4}$/", $path)) {
+      $path = "/resource/" . $path . ".json";
+    }
+
     // The full URL for this resource is the root + the path
     $full_url = $this->root_url . $path;
 
@@ -72,8 +82,11 @@ class Socrata {
 
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-    if($code != "200") {
-      echo "Error \"$code\" from server: $response";
+    if($code == "0") {
+      echo "cURL error: " . curl_error($handle);
+      die();
+    } else if($code != "200" ) {
+      echo "Error \"$code\" from server: $response\n";
       die();
     }
 
