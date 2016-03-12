@@ -10,13 +10,12 @@ Via composer
 composer require socrata/soda-php
 ```
 
-In your API calls, specify ether the full endpoint relative path (eg: `/resource/abcd-2345.json`), or the dataset ID (eg: `abcd-2345`).
-
 ## Usage
 ```php
 $socrata = new Socrata("data.medicare.gov");
 $response = $socrata->get("abcd-2345");
 ```
+In your API calls, specify ether the full endpoint relative path (eg: `/resource/abcd-2345.json`), or the dataset ID (eg: `abcd-2345`).
 
 ## Querying
 
