@@ -45,3 +45,7 @@ $response = $socrata->put("abcd-2345", $data_as_json);
 ```
 
 The library also includes a simple example application, which retrieves rows from a dataset and dumps them in a simple table.
+
+## License
+
+Apache License, Version 2.0. Please see [License File](LICENSE) for more information.
