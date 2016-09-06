@@ -1,6 +1,10 @@
 <?php
   require_once("socrata.php");
 
+  function array_get($needle, $haystack) {
+    return (in_array($needle, array_keys($haystack)) ? $haystack[$needle] : NULL);
+  }
+
   $view_uid = "h8x4-nvyi";
   $root_url = "data.austintexas.gov";
   $app_token = "B0ixMbJj4LuQVfYnz95Hfp3Ni";

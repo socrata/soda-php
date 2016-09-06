@@ -169,13 +169,4 @@ class Socrata {
   }
 }
 
-
-// Convenience functions
-function array_get($needle, $haystack) {
-  return (in_array($needle, array_keys($haystack)) ? $haystack[$needle] : NULL);
-}
-
-function pre_dump($var) {
-  echo "<pre>" . print_r($var) . "</pre>";
-}
 ?>
