@@ -83,11 +83,9 @@ class Socrata {
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     if($code == "0") {
-      echo "cURL error: " . curl_error($handle);
-      die();
+      throw new Exception("cURL error: " . curl_error($handle));
     } else if($code != "200" ) {
-      echo "Error \"$code\" from server: $response\n";
-      die();
+      throw new Exception("Error \"$code\" from server: $response\n");
     }
 
     return json_decode($response, true);
@@ -110,8 +108,7 @@ class Socrata {
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     if($code != "200") {
-      echo "Error \"$code\" from server: $response";
-      die();
+      throw new Exception("Error \"$code\" from server: $response");
     }
 
     return json_decode($response, true);
@@ -147,8 +144,7 @@ class Socrata {
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     if($code != "200") {
-      echo "Error \"$code\" from server: $response";
-      die();
+      throw new Exception("Error \"$code\" from server: $response");
     }
 
     return json_decode($response, true);
