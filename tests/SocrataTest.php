@@ -77,6 +77,15 @@ class SocrataTest extends TestCase {
     $this->assertArrayHasKey("count", $response[0]);
   }
 
+  // What happens when we encounter an error?
+  public function test_query_error() {
+    $client = new Socrata("soda.demo.socrata.com", getenv("APP_TOKEN"));
+
+    // We expect an error!
+    $this->expectException(Exception::class);
+    $response = $client->get("6yvf-kk3n", array("\$paramthatdoesntexist" => "diequerydie"));
+  }
+
   // PUBLISHER TESTS
   public function test_upsert() {
     $client = new Socrata("soda.demo.socrata.com", getenv("APP_TOKEN"), getenv("SOCRATA_USER"), getenv("SOCRATA_PASSWORD"));
