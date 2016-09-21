@@ -95,23 +95,9 @@ class Socrata {
 
   // Convenience function for Posts
   public function post($path, $json_filter) {
+    $handle = $this->create_curl_handle($path, array());
 
-    // The full URL for this resource is the root + the path
-    $full_url = $this->root_url . $path;
-
-
-    // Build up the headers we'll need to pass
-    $headers = array(
-      'Accept: application/json',
-      'Content-type: application/json',
-      "X-App-Token: " . $this->app_token
-    );
-
-    // Time for some cURL magic...
-    $handle = curl_init();
-    curl_setopt($handle, CURLOPT_URL, $full_url);
-    curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+    // Set up our handle for POSTs
     curl_setopt($handle, CURLOPT_POST, true);
     curl_setopt($handle, CURLOPT_POSTFIELDS, $json_filter);
     curl_setopt($handle, CURLOPT_CUSTOMREQUEST, "POST");
