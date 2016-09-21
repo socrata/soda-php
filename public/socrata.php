@@ -83,11 +83,9 @@ class Socrata {
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     if($code == "0") {
-      echo "cURL error: " . curl_error($handle);
-      die();
+      throw new Exception("cURL error: " . curl_error($handle));
     } else if($code != "200" ) {
-      echo "Error \"$code\" from server: $response\n";
-      die();
+      throw new Exception("Error \"$code\" from server: $response\n");
     }
 
     return json_decode($response, true);
@@ -95,23 +93,9 @@ class Socrata {
 
   // Convenience function for Posts
   public function post($path, $json_filter) {
+    $handle = $this->create_curl_handle($path, array());
 
-    // The full URL for this resource is the root + the path
-    $full_url = $this->root_url . $path;
-
-
-    // Build up the headers we'll need to pass
-    $headers = array(
-      'Accept: application/json',
-      'Content-type: application/json',
-      "X-App-Token: " . $this->app_token
-    );
-
-    // Time for some cURL magic...
-    $handle = curl_init();
-    curl_setopt($handle, CURLOPT_URL, $full_url);
-    curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+    // Set up our handle for POSTs
     curl_setopt($handle, CURLOPT_POST, true);
     curl_setopt($handle, CURLOPT_POSTFIELDS, $json_filter);
     curl_setopt($handle, CURLOPT_CUSTOMREQUEST, "POST");
@@ -124,8 +108,7 @@ class Socrata {
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     if($code != "200") {
-      echo "Error \"$code\" from server: $response";
-      die();
+      throw new Exception("Error \"$code\" from server: $response");
     }
 
     return json_decode($response, true);
@@ -161,8 +144,7 @@ class Socrata {
     $response = curl_exec($handle);
     $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
     if($code != "200") {
-      echo "Error \"$code\" from server: $response";
-      die();
+      throw new Exception("Error \"$code\" from server: $response");
     }
 
     return json_decode($response, true);
