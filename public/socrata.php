@@ -116,9 +116,7 @@ class Socrata {
 
   // Convenience function for Puts
   public function put($path, $json_filter) {
-
-    // The full URL for this resource is the root + the path
-    $full_url = $this->root_url . $path;
+    $handle = $this->create_curl_handle($path, array());
 
 
     // Build up the headers we'll need to pass
@@ -129,8 +127,6 @@ class Socrata {
     );
 
     // Time for some cURL magic...
-    $handle = curl_init();
-    curl_setopt($handle, CURLOPT_URL, $full_url);
     curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($handle, CURLOPT_POSTFIELDS, $json_filter);
