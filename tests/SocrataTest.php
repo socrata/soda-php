@@ -1,9 +1,8 @@
 <?php
+require  './public/socrata.php';
+require './vendor/autoload.php';
 
-use PhpUnit\Framework\TestCase;
-require './public/socrata.php';
-
-class SocrataTest extends TestCase {
+class SocrataTest extends PHPUnit_Framework_TestCase {
 
   // Similar to other libraries, bare domain name and UID, no query passed
   public function test_domain_and_uid() {
