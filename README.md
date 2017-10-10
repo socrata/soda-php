@@ -66,6 +66,8 @@ Unit testing uses the standard `PHPUnit` library.  Please add a failing test bef
 $ vendor/bin/phpunit
 ```
 
+Write tests will fail if you don't have the proper user credentials. Travis CI is configured to run them properly, however.
+
 ## License
 
 Apache License, Version 2.0. Please see [License File](LICENSE) for more information.
