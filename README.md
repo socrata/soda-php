@@ -1,6 +1,7 @@
-Socrata - Basic PHP Library
-Updated 2014-07-22, Chris Metcalf, chris.metcalf (at) socrata.com
 
+[![Build Status](https://travis-ci.org/socrata/soda-php.svg?branch=chrismetcalf%2Ftravis)](https://travis-ci.org/socrata/soda-php)
+
+# Socrata - Basic PHP Library
 This library provides a simple wrapper for accessing some of the features of the Socrata Open Data API from PHP. Currently it supports HTTP GET, POST, and PUT operations.
 
 ## Installation
@@ -12,6 +13,7 @@ composer require socrata/soda-php
 ```
 
 If not using composer, simply require the `socrata\soda\Client` class:
+
 ```php
 require '{install_dir}/src/Client.php';
 ```
@@ -23,6 +25,8 @@ use socrata\soda\Client;
 $sodaClient = new Client("http://data.medicare.gov");
 $response = $sodaClient->get("/resource/abcd-2345.json");
 ```
+
+In your API calls, specify ether the full endpoint relative path (eg: `/resource/abcd-2345.json`), or the dataset ID (eg: `abcd-2345`).
 
 ## Querying
 
@@ -61,3 +65,7 @@ Unit testing uses the standard `PHPUnit` library.  Please add a failing test bef
 ```bash
 $ vendor/bin/phpunit
 ```
+
+## License
+
+Apache License, Version 2.0. Please see [License File](LICENSE) for more information.
