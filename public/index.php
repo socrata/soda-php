@@ -1,71 +1,67 @@
 <?php
-  require_once("socrata.php");
+if (file_exists("../vendor/autoload.php")) {
+  require_once "../vendor/autoload.php";
+} else {
+  require_once "../src/Client.php";
+}
 
-  function array_get($needle, $haystack) {
-    return (in_array($needle, array_keys($haystack)) ? $haystack[$needle] : NULL);
-  }
+use socrata\soda\Client;
 
-  $view_uid = "h8x4-nvyi";
-  $root_url = "data.austintexas.gov";
-  $app_token = "B0ixMbJj4LuQVfYnz95Hfp3Ni";
-  $response = NULL;
+// Convenience functions
+function array_get($needle, array $haystack, $default = NULL) {
+  return isset($haystack[$needle]) ? $haystack[$needle] : $default;
+}
 
-  $latitude = array_get("latitude", $_POST);
-  $longitude = array_get("longitude", $_POST);
-  $range = array_get("range", $_POST);
+function pre_dump($var) {
+  echo "<pre>" . print_r($var) . "</pre>";
+}
 
-  if($latitude != NULL && $longitude != NULL && $range != NULL) {
-    // Create a new unauthenticated client
-    $socrata = new Socrata($root_url, $app_token);
+$view_uid = "y9us-9xdf";
+$root_url = "https://data.medicare.gov";
+$footnote = array_get("footnote", $_POST);
 
-    $params = array("\$where" => "within_circle(location, $latitude, $longitude, $range)");
+// Create a new unauthenticated client
+$sodaClient = new Client($root_url);
+$params     = array();
 
-    $response = $socrata->get($view_uid, $params);
-  }
+if (!empty($footnote)) {
+  $params['$where'] = "footnote=$footnote";
+}
+
+$response = $sodaClient->get("/resource/{$view_uid}.json", $params);
 ?>
 <html>
   <head>
-    <title>Austin Dangerous Dogs</title>
+    <title>Medicare Footnote Crosswalk</title>
   </head>
   <body>
-    <h1>Austin Dangerous Dogs</h1>
-
-    <p>If you get no results, its likely because there are no dangerous dogs at that location. Try another lat/long.</p>
-
-    <?php if($response == NULL) { ?>
-      <form action="index.php" method="POST">
-        <label for="latitude">Latitude</label>
-        <input type="text" name="latitude" size="10" value="30.244588"/><br/>
-
-        <label for="longitude">Longitude</label>
-        <input type="text" name="longitude" size="10" value="-97.5824817"/><br/>
-
-        <label for="range">Range</label>
-        <input type="text" name="range" size="10" value="10000"/><br/>
-
-        <input type="submit" value="Submit"/>
-      </form>
-    <?php } else { ?>
+    <h1>Medicare Footnote Crosswalk</h1>
+    <p><?= $root_url . "/resource/{$view_uid}.json" ?></p>
+    <form method="POST">
+      <label>Footnote: <input type="number" name="footnote" value="<?= $footnote ?>" /></label>
+      <input type="submit" value="Search" />
+    </form>
+    <?php if (!isset($response['error'])) : ?>
       <h2>Results</h2>
 
       <?# Create a table for our actual data ?>
       <table border="1">
         <tr>
-          <th>Description</th>
-          <th>Address</th>
+          <th>Footnote</th>
+          <th>Footnote Text</th>
         </tr>
         <?# Print rows ?>
-        <?php foreach($response as $row) { ?>
+        <?php foreach($response as $row) : ?>
           <tr>
-            <td><?= $row["description_of_dog"] ?></td>
-            <td><a href="https://www.google.com/maps/search/<?= $row["location"]["coordinates"][1] ?>,<?= $row["location"]["coordinates"][0] ?>"><?= $row["address"] ?></a></td>
+            <td><?= $row["footnote"] ?></td>
+            <td><?= $row["footnote_text"] ?></td>
           </tr>
-        <?php } ?>
+        <?php endforeach; ?>
       </table>
+    <?php endif; ?>
 
-      <h3>Raw Response</h3>
-      <pre><?= var_dump($response) ?></pre>
-    <?php } ?>
+    <h3>Raw Response</h3>
+    <pre><?= var_dump($response) ?></pre>
   </body>
 </html>
 

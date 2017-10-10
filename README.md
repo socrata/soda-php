@@ -4,24 +4,28 @@
 # Socrata - Basic PHP Library
 This library provides a simple wrapper for accessing some of the features of the Socrata Open Data API from PHP. Currently it supports HTTP GET, POST, and PUT operations.
 
-The library is very simple. To access the Socrata API, you first instantiate a "Socrata" object, passing in the domain of the data site you wish to access. The library will also accept the full root path including the protocol (ex: `http://data.medicare.gov`). Then you can use its included methods to make simple API calls:
+## Installation
 
-## Supported PHP versions
+Add the following to your project's `composer.json`:
 
-In order to access the SODA API via HTTPS, clients must now [support the Server Name Indication (SNI)](https://dev.socrata.com/changelog/2016/08/24/sni-now-required-for-https-connections.html) extension to the TLS protocol. What does this mean? It means that if you're using `soda-php`, you must [use PHP 5.6 or above](https://en.wikipedia.org/wiki/Server_Name_Indication), as that is when PHP introduced support for SNI.
-
-## Install
-Via composer
-
-``` bash
+```bash
 composer require socrata/soda-php
 ```
 
-## Usage
+If not using composer, simply require the `socrata\soda\Client` class:
+
 ```php
-$socrata = new Socrata("data.medicare.gov");
-$response = $socrata->get("abcd-2345");
+require '{install_dir}/src/Client.php';
 ```
+
+The library is very simple. To access the Socrata API, you first instantiate a "socrata\soda\Client" object, passing in the API base URL for the data site you wish to access. The Base URL is always the URL for the root of the datasite (ex: http://www.socrata.com or http://data.medicare.gov). Then you can use its included methods to make simple API calls:
+
+```php
+use socrata\soda\Client;
+$sodaClient = new Client("http://data.medicare.gov");
+$response = $sodaClient->get("/resource/abcd-2345.json");
+```
+
 In your API calls, specify ether the full endpoint relative path (eg: `/resource/abcd-2345.json`), or the dataset ID (eg: `abcd-2345`).
 
 ## Querying
@@ -29,11 +33,12 @@ In your API calls, specify ether the full endpoint relative path (eg: `/resource
 [Simple filters](http://dev.socrata.com/docs/filtering.html) and [SoQL Queries](http://dev.socrata.com/docs/queries.html) can be passed as a parameter to the `get` function:
 
 ```php
-$socrata = new Socrata("data.austintexas.gov", $app_token);
+use socrata\soda\Client;
+$sodaClient = new Client("https://data.austintexas.gov", $app_token);
 
 $params = array("\$where" => "within_circle(location, $latitude, $longitude, $range)");
 
-$response = $socrata->get($view_uid, $params);
+$response = $sodaClient->get("/resource/$view_uid.json", $params);
 ```
 
 ## Publishing
@@ -41,16 +46,27 @@ $response = $socrata->get($view_uid, $params);
 To use the library to publish data you can use the PUT (replace) or POST (upsert) methods:
 
 ```php
-$socrata = new Socrata("data.medicare.gov", $app_token, $user_name, $password);
+use socrata\soda\Client;
+$sodaClient = new Client("https://data.medicare.gov", $app_token, $user_name, $password);
 
 // Publish data via 'upsert'
-$response = $socrata->post("abcd-2345", $data_as_json);
+$response = $sodaClient->post("/resource/abcd-2345.json", $data_as_json);
 
 // Publish data via 'replace'
-$response = $socrata->put("abcd-2345", $data_as_json);
+$response = $sodaClient->put("/resource/abcd-2345.json", $data_as_json);
 ```
 
 The library also includes a simple example application, which retrieves rows from a dataset and dumps them in a simple table.
+
+## Development and Testing
+
+Unit testing uses the standard `PHPUnit` library.  Please add a failing test before making any modifications.  Run tests with the following command:
+
+```bash
+$ vendor/bin/phpunit
+```
+
+Write tests will fail if you don't have the proper user credentials. Travis CI is configured to run them properly, however.
 
 ## License
 

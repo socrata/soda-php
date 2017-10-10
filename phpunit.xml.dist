@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://phpunit.de/phpunit.xsd"
+    bootstrap="./test/config/bootstrap.php" backupGlobals="false" verbose="true" colors="true">
+
+    <testsuites>
+        <testsuite name="soda">
+            <directory suffix="Test.php">./test</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"
+            lowUpperBound="50" highLowerBound="80" />
+        <log type="coverage-clover" target="./build/logs/clover.xml" />
+    </logging>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory>./vendor</directory>
+                <directory>./test</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <php>
+        <const name="PHPUNIT_TESTSUITE" value="true" />
+    </php>
+
+</phpunit>
