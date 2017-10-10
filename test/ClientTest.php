@@ -42,7 +42,7 @@ class ClientTest extends TestCase
         $result = $client->get($this->buildPath(self::SODA_DATASET_FOR_QUERIES), array('$limit' => '10', 'source' => 'ak'));
         $this->assertInternalType('array', $result);
         $this->assertCount(10, $result);
-        while(list($idx, $entry) = each($result))
+        foreach($result as $idx => $entry)
         {
           $this->assertEquals('ak', $entry['source']);
         }
