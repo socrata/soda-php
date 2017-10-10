@@ -4,6 +4,8 @@ php:
 - '7.0'
 - hhvm
 - nightly
+install: composer install
+script: vendor/bin/phpunit
 notifications:
   slack:
     secure: mSgMaVq5RYxcCuETKjfeNIKzAEto9lDpq9n4dgsRkaHxC1y9lwruDtEXRzHSKsYGd15jI1L0mFB1GcFSPywNXIt5rbrxmnhxbzhTkX7RJhkcWIdlej50+fHF2DO5bDVVfEY6MEVfbMh1ZC5eFacFFg4xdt6S5F7/tkeNqo3odYc=
