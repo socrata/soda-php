@@ -10,7 +10,7 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "^6.4"
     },
     "autoload": {
         "psr-4": {

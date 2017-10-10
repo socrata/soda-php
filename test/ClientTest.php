@@ -2,51 +2,98 @@
 
 namespace socrata\soda\test;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use socrata\soda\Client;
 
 class ClientTest extends TestCase
 {
-    const SODA_HOST  = 'https://data.medicare.gov';
-    const SODA_VIEW  = 'y9us-9xdf';
-    const SODA_TOKEN = 'totallyfakenotrealapptoken';
-    const SODA_USER  = 'fakeuser@socrata.com';
-    const SODA_PASS  = 'fakepassword';
+    const SODA_HOST  = 'https://sandbox.demo.socrata.com';
+    const SODA_DATASET_FOR_QUERIES = 'nimj-3ivp';
+    const SODA_DATASET_FOR_UPDATES  = 'def3-fazd';
+    const SODA_TOKEN = 'Va5h7Eu1PA1f1mVwbsWI89SvY';
 
-    private $path;
-
-    public function setUp()
+    public function getAuthenticatedClient()
     {
-        $this->path = '/resource/' . self::SODA_VIEW . '.json';
+        return new Client(self::SODA_HOST, self::SODA_TOKEN, getenv("SOCRATA_USER"), getenv("SOCRATA_PASSWORD"));
     }
 
+    public function getAnonymousClient()
+    {
+        return new Client(self::SODA_HOST, self::SODA_TOKEN);
+    }
+
+    public function buildPath($uid)
+    {
+        return '/resource/' . $uid . '.json';
+    }
+
+    // READ Functions
     public function testGetReturnsArray()
     {
-        $client = new Client(self::SODA_HOST);
-        $result = $client->get($this->path, array('$limit' => '10'));
+        $client = $this->getAnonymousClient();;
+        $result = $client->get($this->buildPath(self::SODA_DATASET_FOR_QUERIES), array('$limit' => '10'));
         $this->assertInternalType('array', $result);
         $this->assertCount(10, $result);
     }
 
-    public function testPostResultIsError()
+    public function testGetWithFilter()
     {
-        $client = new Client(self::SODA_HOST, self::SODA_TOKEN, self::SODA_USER, self::SODA_PASS);
-        $result = $client->post($this->path, array(
-            'footnote' => '99',
-            'footnote_text' => 'soda-php sdk test - disregard'
-        ));
-        $this->assertArrayHasKey('error', $result);
+        $client = $this->getAnonymousClient();;
+        $result = $client->get($this->buildPath(self::SODA_DATASET_FOR_QUERIES), array('$limit' => '10', 'source' => 'ak'));
+        $this->assertInternalType('array', $result);
+        $this->assertCount(10, $result);
+        while(list($idx, $entry) = each($result))
+        {
+          $this->assertEquals('ak', $entry['source']);
+        }
+    }
+
+    public function testGetWithQuery()
+    {
+        $client = $this->getAnonymousClient();;
+        $result = $client->get($this->buildPath(self::SODA_DATASET_FOR_QUERIES), array('$limit' => '10', '$where' => 'magnitude > 2.0'));
+        $this->assertInternalType('array', $result);
+        $this->assertCount(10, $result);
+        while(list($idx, $entry) = each($result))
+        {
+          $this->assertTrue($entry['magnitude'] > 2.0);
+        }
+    }
+
+    public function testInvalidGet()
+    {
+        $client = $this->getAnonymousClient();;
+        $result = $client->get($this->buildPath(self::SODA_DATASET_FOR_QUERIES), array('$kaboom' => true));
         $this->assertTrue($result['error']);
     }
 
-    public function testPutResultIsError()
+
+    // WRITE Functions
+    public function testPostSingleRow()
     {
-        $client = new Client(self::SODA_HOST, self::SODA_TOKEN);
-        $result = $client->put($this->path, array(
-            'footnote' => '99',
-            'footnote_text' => 'remove me'
+        $client = $this->getAuthenticatedClient();
+        $result = $client->post($this->buildPath(self::SODA_DATASET_FOR_UPDATES), array(
+            'text' => 'foobar',
+            'number' => 42
         ));
-        $this->assertArrayHasKey('error', $result);
-        $this->assertTrue($result['error']);
+        $this->assertArrayHasKey('text', $result);
+        $this->assertEquals('foobar', $result['text']);
+    }
+
+    public function testPostUpsert()
+    {
+        $client = $this->getAuthenticatedClient();
+        $result = $client->post($this->buildPath(self::SODA_DATASET_FOR_UPDATES), array(
+          array(
+            'text' => 'foobar',
+            'number' => 42
+          ),
+          array(
+            'text' => 'quobang',
+            'number' => 43
+          )
+        ));
+        $this->assertArrayHasKey('Rows Created', $result);
+        $this->assertEquals(2, $result['Rows Created']);
     }
 }
