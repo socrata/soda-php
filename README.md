@@ -50,6 +50,8 @@ $response = $socrata->post("abcd-2345", $data_as_json);
 $response = $socrata->put("abcd-2345", $data_as_json);
 ```
 
+Note: This library supports writing directly to datasets with the Socrata Open Data API. For datasets with one or more data transformations applied to the schema through the Socrata Data Management Experience (the user interface for creating datasets), use the Socrata Data Management API to apply those same transformations to all updates. For more details on when to use SODA vs the Socrata Data Management API, see the [Data Management API documentation](https://socratapublishing.docs.apiary.io)
+
 The library also includes a simple example application, which retrieves rows from a dataset and dumps them in a simple table.
 
 ## License
